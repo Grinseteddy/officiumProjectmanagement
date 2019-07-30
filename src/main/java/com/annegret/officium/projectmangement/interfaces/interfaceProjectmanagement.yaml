@@ -136,6 +136,12 @@ components:
           type: string
           description: User ID of the user who created the project
           example: "21a2bac3-a2c4-4e45-b6da-2248bb36b82e"
+        thread:
+          type: string
+          format: uuid
+          description: Thread of comments identifiable by its ID
+          example: "21a2bac3-a2c4-4e45-b6da-2248bb36b82e"
+
           
     ProjectRequest:
       type: object
