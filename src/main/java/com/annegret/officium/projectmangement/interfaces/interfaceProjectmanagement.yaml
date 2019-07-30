@@ -1,0 +1,215 @@
+openapi: 3.0.2
+info:
+  title: title
+  version: version
+paths:
+  /projects:
+    get:
+      description: Gets all projects out of database
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        default:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+    post:
+      summary: Creates a new project with name
+      operationId: createNewProject
+      requestBody:
+        $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+        default:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+  /projects/{projectId}:
+    get:
+      description: Gets a single project with its ID
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+        default:
+          description: Bad request - Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+    put:
+      description: Updates a single project recognized by its ID
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+      requestBody:
+        $ref: '#/components/schemas/ProjectRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+        default:
+          description: Bad request - Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+components:
+  schemas:
+    Project:
+      type: object
+      description: A single project belonging to Officium. Usually a project is assigned to a team.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "2b6ba31e-2da4-4055-a43e-fa1efa72d449"
+        name:
+          type: string
+          description: Name of the project, it is recommended that a project name is unique inside of a team
+          example: "My nice project"
+        team:
+          type: string
+          format: uuid
+          description: ID of the team to whom the project is assigned
+          example:  "21a2bac3-a2c4-4e45-b6da-2248bb36b82e"
+        createdAt:
+          type: string
+          format: date-time
+          description: Date when project has been created
+          example: "2019-07-21T20:18:49.07973"
+        createdBy:
+          type: string
+          description: User ID of the user who created the project
+          example: "21a2bac3-a2c4-4e45-b6da-2248bb36b82e"
+        updatedAg:
+          type: string
+          format: date-time
+          description: Date when project has been created
+          example: "2019-07-21T20:18:49.07973"
+        updatedBy:
+          type: string
+          description: User ID of the user who created the project
+          example: "21a2bac3-a2c4-4e45-b6da-2248bb36b82e"
+          
+    ProjectRequest:
+      type: object
+      description: Request to create or change a project
+      properties:
+        name:
+          type: string
+          description: Name of the project, it is recommended that a project name is unique inside of a team
+          example: "My nice project"
+
+    Message:
+      description: Message in case of an error
+      required:
+        - Code
+        - Severity
+        - Message
+        - TrackingId
+      properties:
+        Code:
+          type: string
+          description: Code of the according error
+          example: TASKCREATED
+        Severity:
+          type: string
+          description: Severity of the according message
+          enum:
+            - SUCCESS
+            - WARNING
+            - ERROR
+            - CRITICALERROR
+          example: SUCCESS
+        Message:
+          type: string
+          description: Message of the according action
+          example: Task Create a new task management successfully created
+        TrackingId:
+          type: string
+          description: Unique ID to follow a message through the entire system
+          example: 30ddd105-fe30-4b4a-b993-379ef903201b
+
+    UsefulLink:
+      description: Link to an object which can be enhanced
+      properties:
+        href:
+          type: string
+          format: uriref
+          description: Referenz link to a helpful information
+          example: 'http://mytaskmanagerserver/users/bf62265f-77e3-413c-b40a-0a72da00b7b'
+        type:
+          type: string
+          description: type of according reference
+          enum:
+            - PDF
+            - Hyperlink
+          example: Hyperlink
+        relation:
+          type: string
+          description: Relation of the according link to the provided object, Object usually
+            means the access to the object itself
+          enum:
+            - Object
+            - Assignee
+            - Thread
+          example: Assignee
+
+    ProjectResponse:
+      type: object
+      description: Response to project request
+      properties:
+        Project:
+          $ref: "#/components/schemas/Project"
+        Message:
+          $ref: "#/components/schemas/Message"
+        UsefulLinks:
+          type: array
+          items:
+            $ref: "#/components/schemas/UsefulLink"
+
