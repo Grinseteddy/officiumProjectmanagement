@@ -1,6 +1,7 @@
 package com.annegret.officium.projectmangement;
 
 import com.annegret.officium.projectmangement.entities.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,6 +14,10 @@ import java.util.Optional;
 public class ProjectmanagementController {
 
     private final ProjectsRepository projectsRepository;
+
+    //ToDo: Read environment variables correctly
+    /*@Value("${taskManagementServer}")*/
+    private static String taskManagementServer="ec2-3-120-34-138.eu-central-1.compute.amazonaws.com:5000";
 
     public ProjectmanagementController(ProjectsRepository projectsRepository) {
         this.projectsRepository=projectsRepository;
@@ -79,7 +84,16 @@ public class ProjectmanagementController {
             projectToBeUpdated.setUpdatedBy("21a2bac3-a2c4-4e45-b6da-2248bb36b82e");
             projectToBeUpdated.setUpdatedAt(LocalDateTime.now());
             projectsRepository.save(projectToBeUpdated);
-            return new ProjectResponse(projectToBeUpdated, message, null);
+            ArrayList<Link> links=new ArrayList<>();
+
+            Link tasksLink=new Link();
+            tasksLink.setHref(taskManagementServer+"/tasks/project/"+projectToBeUpdated.getId());
+            tasksLink.setRelation(Link.relation.Object);
+            tasksLink.setLinkType(Link.linkType.HyperLink);
+
+            links.add(tasksLink);
+
+            return new ProjectResponse(projectToBeUpdated, message, links);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Project not found");
 
