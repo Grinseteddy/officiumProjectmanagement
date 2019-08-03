@@ -8,5 +8,5 @@ import java.util.ArrayList;
 @Repository
 public interface ProjectsRepository extends JpaRepository<ProjectEntity, String> {
 
-
+        ProjectEntity findProjectEntitiesById(String Id);
 }
