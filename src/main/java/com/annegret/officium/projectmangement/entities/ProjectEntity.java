@@ -13,7 +13,7 @@ import java.util.UUID;
 public class ProjectEntity {
 
     @Id
-    @Column(name="id", nullable = false)
+    @Column(name="id")
     private String id;
 
     @Column(name = "name")
@@ -22,7 +22,7 @@ public class ProjectEntity {
     @Column(name = "team")
     private String team;
 
-    @Column(name = "createdat", nullable = false)
+    @Column(name = "createdat")
     private LocalDateTime createdAt;
 
     @Column(name="createdby")
@@ -32,7 +32,7 @@ public class ProjectEntity {
     private LocalDateTime updatedAt;
 
     @Column(name="updatedby")
-    private LocalDateTime updatedBy;
+    private String updatedBy;
 
     @Column(name="thread")
     private String thread;
@@ -48,8 +48,8 @@ public class ProjectEntity {
         this.createdAt=LocalDateTime.now();
         this.createdBy="21a2bac3-a2c4-4e45-b6da-2248bb36b82e";
         this.updatedAt=LocalDateTime.now();
-        this.updatedBy=LocalDateTime.now();
-        this.thread=null;
+        this.updatedBy="21a2bac3-a2c4-4e45-b6da-2248bb36b82e";
+        /*this.thread=null;*/
     }
 
     public String getId() { return this.id;}
@@ -80,11 +80,11 @@ public class ProjectEntity {
     public LocalDateTime getUpdatedAt() {return this.updatedAt;}
     public void setUpdatedAt(LocalDateTime updatedAt) {this.updatedAt=updatedAt;}
 
-    public LocalDateTime getUpdatedBy() {
+    public String getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(LocalDateTime updatedBy) {
+    public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
 
