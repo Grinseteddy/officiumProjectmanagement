@@ -34,7 +34,8 @@ public class ProjectmanagementController {
     @ResponseBody
     public ArrayList<ProjectEntity> getProjects() {
         try {
-            return (ArrayList<ProjectEntity>) projectsRepository.findAll();
+            ArrayList<ProjectEntity> projects=(ArrayList<ProjectEntity>) projectsRepository.findAll();
+            return projects;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No project found");
         }
@@ -44,7 +45,7 @@ public class ProjectmanagementController {
     public ProjectEntity addProject(@RequestBody ProjectRequest newProject) {
         try {
             //TODO Get current user
-            ProjectEntity project = new ProjectEntity(newProject.getName());
+            ProjectEntity project = new ProjectEntity(newProject.getName(), newProject.getDueDate());
             projectsRepository.save(project);
             return project;
         } catch (Exception e) {
@@ -69,6 +70,7 @@ public class ProjectmanagementController {
     @PutMapping("/projects/{projectId}")
     public ProjectResponse updateProject(@PathVariable String projectId, @RequestBody ProjectRequest project) throws ResponseStatusException {
         try {
+            //ToDo Check function
             //ToDo Get current user
             Message message=new Message();
             message.setSeverity(Message.severity.SUCCESS);
@@ -80,6 +82,10 @@ public class ProjectmanagementController {
             if (!projectToBeUpdated.getName().equals(project.getName())) {
                 message.setMessage("Project name: "+projectToBeUpdated.getName()+" -> "+project.getName());
                 projectToBeUpdated.setName(project.getName());
+            }
+            if (projectToBeUpdated.getDueDate()==null || !projectToBeUpdated.getDueDate().equals(project.getDueDate())) {
+                message.setMessage("Due date: "+projectToBeUpdated.getDueDate()+" ->"+project.getDueDate());
+                projectToBeUpdated.setDueDate(project.getDueDate());
             }
             projectToBeUpdated.setUpdatedBy("21a2bac3-a2c4-4e45-b6da-2248bb36b82e");
             projectToBeUpdated.setUpdatedAt(LocalDateTime.now());

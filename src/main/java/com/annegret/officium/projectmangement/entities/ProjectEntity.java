@@ -5,6 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -37,11 +39,14 @@ public class ProjectEntity {
     @Column(name="thread")
     private String thread;
 
+    @Column(name="duedate")
+    private LocalDate dueDate;
+
     public ProjectEntity() {
 
     }
 
-    public ProjectEntity(String name) {
+    public ProjectEntity(String name, LocalDate dueDate) {
         this.id= UUID.randomUUID().toString();
         this.name=name;
         this.team=null;
@@ -49,6 +54,7 @@ public class ProjectEntity {
         this.createdBy="21a2bac3-a2c4-4e45-b6da-2248bb36b82e";
         this.updatedAt=LocalDateTime.now();
         this.updatedBy="21a2bac3-a2c4-4e45-b6da-2248bb36b82e";
+        this.dueDate= dueDate;
         /*this.thread=null;*/
     }
 
@@ -87,6 +93,9 @@ public class ProjectEntity {
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
+
+    public LocalDate getDueDate() { return this.dueDate;}
+    public void setDueDate(LocalDate dueDate) { this.dueDate=dueDate;}
 
     public String getThread() {
         return thread;

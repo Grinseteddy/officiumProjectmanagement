@@ -10,9 +10,12 @@
     </parent>
     <groupId>com.annegret.officium</groupId>
     <artifactId>projectmangement</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3
+    </version>
+    <packaging>jar</packaging>
     <name>projectmangement</name>
-    <description>Officium - Light weigth project management</description>
+    <description>Officium - Light weight project management</description>
+
 
     <properties>
         <java.version>11</java.version>
